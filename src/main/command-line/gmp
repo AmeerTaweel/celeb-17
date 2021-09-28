@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+command=$1
+
+case "$command" in
+
+"start")
+  java -jar ~/bin/g-music-player.jar
+  ;;
+
+"play")
+  type=$2
+
+  case "$type" in
+  "all")
+    curl localhost:6969/play/all
+    ;;
+
+  "tag")
+    tag=$3
+    curl "localhost:6969/play/tag/$tag"
+    ;;
+
+  "artist")
+    artist=$3
+    curl "localhost:6969/play/artist/$artist"
+    ;;
+  *)
+    echo "\"$*\" command not found."
+    ;;
+  esac
+
+  ;;
+
+"forward")
+  seconds=$2
+    curl "localhost:6969/fastForward/$seconds"
+  ;;
+
+"rewind")
+  seconds=$2
+    curl "localhost:6969/rewind/$seconds"
+  ;;
+
+"pause")
+  curl localhost:6969/pause
+  ;;
+
+"resume")
+  curl localhost:6969/resume
+  ;;
+
+"repeat")
+  curl localhost:6969/repeat
+  ;;
+
+"loop")
+  curl localhost:6969/loop
+  ;;
+
+"next")
+  curl localhost:6969/next
+  ;;
+
+"prev")
+  curl localhost:6969/prev
+  ;;
+
+*)
+  echo "\"$*\" command not found."
+  ;;
+esac

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Build the JAR file with Gradle
+(cd ../../.. && ./gradlew shadowJar)
+
+# Rename the file
+(cd ../../../build/libs && find ./ -name "*.jar" -exec mv {} g-music-player.jar \;)
+
+# Move the file to the user bin
+(cd ../../../build/libs && mv g-music-player.jar ~/bin/)
+
+# Make a symlink to the gmp command
+(ln -sf "$(pwd)/gmp" "$HOME/bin/gmp")
