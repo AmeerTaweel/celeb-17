@@ -52,6 +52,7 @@ object MusicPlayer {
     }
 
     fun loop() {
+        val i = 0
         if (state == State.STOPPED || state == State.NOT_STARTED) return // Do not loop if no song is running
         state = State.LOOPING
         clip.loop(Clip.LOOP_CONTINUOUSLY)
