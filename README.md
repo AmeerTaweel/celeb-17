@@ -9,3 +9,7 @@ A no-nonsense command-line music player.
 3. Run the `build` shell script
 
 Now you will be able to use the `gmp` command to use the program.
+
+## TODO
+
+- Fix looping stop after pause and resume.
