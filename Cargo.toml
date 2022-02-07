@@ -7,5 +7,6 @@ edition = "2021"
 # https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+inquire = "0.2"
 structopt = "0.3"
 url = "2.2"
