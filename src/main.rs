@@ -24,7 +24,6 @@ fn main() {
 	}
 }
 
-fn download(url: Url){
 fn prompt_user(prompt: &str, suggestions: &[&str]) -> String {
 	let matcher = SkimMatcherV2::default();
 
@@ -50,5 +49,6 @@ fn prompt_user(prompt: &str, suggestions: &[&str]) -> String {
 	}
 }
 
+fn download(url: Url) {
 	println!("{}", url);
 }
