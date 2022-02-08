@@ -3,6 +3,7 @@ use fuzzy_matcher::skim::SkimMatcherV2;
 use inquire::{Text, type_aliases::Suggester};
 use url::Url;
 use structopt::StructOpt;
+use std::process::Command;
 
 #[derive(StructOpt)]
 #[structopt(
@@ -50,5 +51,20 @@ fn prompt_user(prompt: &str, suggestions: &[&str]) -> String {
 }
 
 fn download(url: Url) {
-	println!("{}", url);
+	let downloader = Command::new("yt-dlp")
+		.arg("--format")
+		.arg("bestaudio*")
+		.arg("--extract-audio")
+		.arg("--audio-format")
+		.arg("flac")
+		.arg(url.to_string())
+		.spawn()
+		.expect("Failed to execute yt-dlp.");
+
+	let result = downloader
+		.wait_with_output()
+		.expect("Failed to wait on yt-dlp.");
+
+	if result.status.success() { println!("Download completed."); }
+	else { println!("Download failed."); }
 }
