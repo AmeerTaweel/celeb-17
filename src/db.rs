@@ -1,17 +1,16 @@
-// Database
-
 use crate::io;
-use serde::{Deserialize, Serialize};
-use serde_json::Result;
+use serde::{ Deserialize, Serialize };
 use std::{ env, fs, path::PathBuf };
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all(deserialize = "snake_case", serialize = "camelCase"))]
 struct Song {
 	id: u64,
 	name: String,
 	artists: Vec<String>,
 	tags: Vec<String>,
-	version_of: u64
+	version_of: u64,
+	url: String
 }
 
 #[derive(Serialize, Deserialize)]
