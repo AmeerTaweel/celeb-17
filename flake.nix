@@ -12,6 +12,8 @@
 				rustc
 				cargo
 				yt-dlp
+				pkg-config
+				alsa-lib
 			];
 			buildInputs = [ ];
 		};
