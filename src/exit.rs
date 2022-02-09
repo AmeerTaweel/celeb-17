@@ -28,3 +28,12 @@ impl<T, E> UnwrapOrExit<T> for Result<T, E> {
 		}
 	}
 }
+
+impl<T> UnwrapOrExit<T> for Option<T> {
+	fn unwrap_or_exit_with_error(self, msg: &str) -> T {
+		match self {
+			Some(v) => v,
+			None => with_error(msg)
+		}
+	}
+}

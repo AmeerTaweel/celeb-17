@@ -1,4 +1,4 @@
-use crate::exit::{ UnwrapOrExit };
+use crate::exit::UnwrapOrExit;
 use crate::io;
 use serde::{ Deserialize, Serialize };
 use std::{ env, fs, path::PathBuf };
@@ -85,6 +85,6 @@ impl Database {
 		let db_path = Database::get_path();
 		self.songs.push(song);
 		fs::write(db_path, serde_json::to_string_pretty(self).unwrap())
-			.unwrap("Could not update database");
+			.unwrap_or_exit_with_error("Could not update database");
 	}
 }
