@@ -1,24 +1,21 @@
 use crate::{ exit, log };
 use fuzzy_matcher::{ FuzzyMatcher, skim::SkimMatcherV2 };
 use inquire::{ Text, type_aliases::Suggester, error::InquireError::* };
+use itertools::Itertools;
 
 pub fn prompt_user<T: AsRef<str>>(prompt: &str, suggestions: &[T]) -> String {
 	let matcher = SkimMatcherV2::default();
 
-	let suggester: Suggester = &|input| {
-		let mut suggestions: Vec<(&T, i64)> = suggestions.iter()
-			.map(|s| {
-				let score = matcher.fuzzy_match(s.as_ref(), input)
-					.unwrap_or_default(); // Score is 0 if there is no match
-				(s, score)
-			})
-			.filter(|(_, score)| *score > 0)
-			.collect();
-		// Sort by score
-		suggestions.sort_by(|(_, a), (_, b)| b.cmp(a));
-		// Remove score data
-		suggestions.iter().map(|(s, _)| s.as_ref().to_string()).collect()
-	};
+	let suggester: Suggester = &|input| suggestions.into_iter()
+		.map(|s| {
+			let score = matcher.fuzzy_match(s.as_ref(), input)
+				.unwrap_or_default(); // Score is 0 if there is no match
+			(s, score)
+		})
+		.filter(|(_, score)| *score > 0)
+		.sorted_by(|(_, a), (_, b)| b.cmp(a)) // Sort by score
+		.map(|(s, _)| s.as_ref().to_string())
+		.collect();
 
 	let answer = Text::new(prompt)
 		.with_suggester(suggester)
