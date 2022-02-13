@@ -1,5 +1,6 @@
 use crate::exit::UnwrapOrExit;
 use crate::io;
+use itertools::Itertools;
 use serde::{ Deserialize, Serialize };
 use std::{ env, fs, path::PathBuf };
 
@@ -61,23 +62,43 @@ impl Database {
 	}
 
 	pub fn get_song_names(&self) -> Vec<String> {
-		self.songs.iter().map(|song| song.name.clone()).collect()
+		self.songs.iter()
+			.map(|song| song.name.clone())
+			.collect::<Vec<String>>()
+			.into_iter()
+			.unique()
+			.collect()
 	}
 
 	pub fn get_artist_names(&self) -> Vec<String> {
-		self.songs.iter().map(|song| song.artists.clone()).flatten().collect()
+		self.songs.iter()
+			.map(|song| song.artists.clone())
+			.flatten()
+			.collect::<Vec<String>>()
+			.into_iter()
+			.unique()
+			.collect()
 	}
 
 	pub fn get_tags(&self) -> Vec<String> {
-		self.songs.iter().map(|song| song.tags.clone()).flatten().collect()
+		self.songs.iter()
+			.map(|song| song.tags.clone())
+			.flatten()
+			.collect::<Vec<String>>()
+			.into_iter()
+			.unique()
+			.collect()
 	}
 
 	pub fn get_next_id(&self) -> u64 {
-		self.songs.iter().map(|song| song.id).max().unwrap_or_default() + 1
+		self.songs.iter()
+			.map(|song| song.id).max()
+			.unwrap_or_default() + 1
 	}
 	
 	pub fn get_song_by_name(&self, name: &str) -> &Song {
-		&self.songs.iter().find(|song| song.name == name)
+		&self.songs.iter()
+			.find(|song| song.name == name)
 			.unwrap_or_exit_with_error("Invalid song name")
 	}
 
